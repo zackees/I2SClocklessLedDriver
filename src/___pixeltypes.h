@@ -2,7 +2,10 @@
 #ifdef USE_FASTLED
     #include "FastLED.h"
 #endif
+
+#ifndef ESP_IDF
 #include "Arduino.h"
+#endif
 
 #define _OUT_OF_BOUND -12
 
@@ -326,7 +329,11 @@ class Pixels
     }
     void clear()
     {
+#ifdef ESP_IDF        
+        memset((void *)ledpointer,0,_size*sizeof(Pixel));
+#else        
         memset(ledpointer,0,_size*sizeof(Pixel));
+#endif
     }
 
     Pixels  createSubset(int start,int length)
